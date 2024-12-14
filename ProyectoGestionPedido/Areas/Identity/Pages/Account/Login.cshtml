@@ -1,0 +1,122 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="card card-primary card-outline">
+    <div class="card-header">
+        <h3 class="card-title">Compose New Message</h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-4">
+    </div>
+    <div class="col-4">
+        <div class="login-box">
+            <div class="login-logo">
+                @*  <div class="card card-primary card-outline">
+                <div class="card-header">
+                *@
+                <a><b>Ingrese</b> al SISTEMA</a>
+            </div>
+            @* </div>
+            </div> *@
+            <div class="card">
+                <div class="card-body login-card-body">
+                    <p class="login-box-msg"> Ingrese sus credenciales </p>
+
+
+                    <form id="account" method="post">
+                        <div class="input-group mb-3">
+                            <input asp-for="Input.Email" class="form-control"
+                                   autocomplete="username" aria-required="true" />
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-envelope"></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="input-group mb-3">
+
+                            <input asp-for="Input.Password" class="form-control"
+                                   autocomplete="current-password" aria-required="true"
+                                   placeholder="password" />
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="icheck-primary">
+                                    <input type="checkbox" asp-for="Input.RememberMe" />
+                                    @*  @Html.DisplayNameFor(m => m.Input.RememberMe) *@
+                                    <label asp-for="Input.RememberMe">
+                                        @* Remember me *@
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <button type="submit" class="btn btn-success btn-block">
+                                    <i class="fa fa-key" aria-hidden="true"> Sign In</i>
+
+                                </button>
+
+                            </div>
+                        </div>
+
+
+                    </form>
+
+                    <div class="social-auth-links text-center mt-2 mb-3">
+                        <a class="btn btn-block btn-primary btn-sm ">
+                            <i class="fab fa-facebook mr-2" aria-hidden="true">
+
+                            </i> Sign in using Facebook
+
+                        </a>
+                        <a class="btn btn-block btn-danger btn-sm">
+                            <i class="fab fa-google-plus mr-2" aria-hidden="true">
+
+                            </i> Sign in using Google+
+
+                        </a>
+                    </div>
+                    <p class="mb-1">
+                        <a href="#"> forgot my password</a>
+                    </p>
+                    <p clas="mb-1">
+                        <a href="#">Register a new membership</a>
+                    </p>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+}

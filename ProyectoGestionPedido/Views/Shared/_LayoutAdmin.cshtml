@@ -5,8 +5,12 @@
         @inject SignInManager<Usuario> SignInManager
     @inject UserManager<Usuario> UserManager*/
 }
-
-
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using static ProyectoGestionPedido.Data.ApplicationDbContext;
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
+@inject IAuthorizationService AuthorizationService;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,7 +69,9 @@
 
                     */
                 }
-             
+               <li class="nav-item d-none d-sm-inline-block">
+                    @await Html.PartialAsync("_LoginPartial")
+        </li> 
             
 
 
@@ -244,16 +250,16 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-
-                                <li class="nav-item">
-                                    <a asp-controller="Cliente" asp-action="ListarClientes" class="nav-link active">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Clientes</p>
-                                    </a>
-                                </li>
-
-
-
+                                @if ((await AuthorizationService.AuthorizeAsync(User,"AllowLayoutAdministrador")).Succeeded)
+                                {
+                                              <li class="nav-item">
+                                        <a asp-controller="Cliente" asp-action="ListarClientes" class="nav-link active">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Clientes</p>
+                                        </a>
+                                    </li>
+                                }
+                          
                                 <li class="nav-item">
                                     <a asp-controller="DetallePedido" asp-action="Index" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>

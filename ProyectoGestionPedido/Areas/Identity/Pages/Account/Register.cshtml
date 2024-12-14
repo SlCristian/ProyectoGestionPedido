@@ -1,0 +1,104 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-info card-outline">
+            <div class="card-header">
+                <h3 class="card-title text-dark">
+                    <span class="text-dark">
+                        <i class="fas fa-edit"></i>
+                    </span>
+                    Registrar Usuario
+                </h3>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-1">
+                </div>
+                <div class="col-2 align-self-center">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-info">
+                            <i class="far fa-edit"> </i>
+                        </span>
+                        <div class="info-box-content">
+                            <span class="info-box-number text-dark">
+                                Registrar
+                            </span>
+                            <span class="text-dark">
+                                <i class="far fa-hand-point-right"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Usuario</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                                <div class="form-floating mb-3">
+
+                                    <input asp-for="Input.nombre" class="form-control"
+                                           aria-required="true" placeholder="Nombres">
+                                    <label>Nombres</label>
+                                </div>
+                                <div class="form-floating mb-3">
+
+                                    <input asp-for="Input.celular" class="form-control"
+                                           aria-required="true" placeholder="Celular" required>
+                                    <label>Celular</label>
+                                </div>
+                                <div class="form-floating mb-3">
+
+                                    <input asp-for="Input.direccion" class="form-control"
+                                           aria-required="true" placeholder="Direccion" required>
+                                    <label>Direccion</label>
+                                </div>
+                               <div class="form-group">
+                         <label asp-for="Input.TipoCliente">Seleccione un rol:</label>
+        <select asp-for="Input.TipoCliente"  class="form-control">
+            <option value="Cliente">Cliente</option>
+            <option value="Cliente">Vendedor</option>
+        </select>
+    </div>
+                         
+                                <div asp-validation-summary="ModelOnly" class="text-danger" role="a"></div>
+                                <div class="form-floating mb-3">
+                                    <label asp-for="Input.Email"></label>
+                                    <input asp-for="Input.Email" class="form-control" aria-required="true" />
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <label asp-for="Input.Password"></label>
+                                    <input asp-for="Input.Password" class="form-control" aria-required="true" />
+                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <label asp-for="Input.ConfirmPassword"></label>
+                                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
+                                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-registered" aria-hidden="true"></i>Register
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+}

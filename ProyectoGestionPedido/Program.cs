@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ProyectoGestionPedido.Data;
 using ProyectoGestionPedido.Data.DataAccess;
 using ProyectoGestionPedido.Data.Interface;
-
+using static ProyectoGestionPedido.Data.ApplicationDbContext;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,7 +12,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireConfirmedAccount = true)
+     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 //AGREGANDO PARA LAS INTERFACES//
@@ -24,8 +25,15 @@ builder.Services.AddSingleton<IDAPedido, PedidoDA>();
 builder.Services.AddSingleton<IDAProducto, ProductoDA>();
 builder.Services.AddSingleton<IDARutas, RutasDA>();
 //AGREGANDO PARA LOS ROLES//
+builder.Services.AddAuthorization(
+    options => options.AddPolicy(
+        "AllowLayoutAdministrador",
+    policy => policy.RequireRole("Administrador")));
 
-
+builder.Services.AddAuthorization(
+    options => options.AddPolicy(
+        "AllowLayoutVendedor",
+    policy => policy.RequireRole("Vendedor")));
 
 
 

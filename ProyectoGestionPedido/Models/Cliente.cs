@@ -10,6 +10,7 @@ namespace ProyectoGestionPedido.Models
     public string correo { get; set; }
     public string direccion {  get; set; }
      public string celular { get; set; }
+        public string? TipoCliente { get; set; }
         //relacion//
         public virtual ICollection<Pedido> Pedido { get; set; }
     }

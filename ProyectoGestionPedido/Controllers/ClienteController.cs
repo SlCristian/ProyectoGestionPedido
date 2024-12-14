@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata;
 using ProyectoGestionPedido.Data;
 using ProyectoGestionPedido.Data.Interface;
@@ -6,6 +7,7 @@ using ProyectoGestionPedido.Models;
 using X.PagedList.Extensions;
 namespace ProyectoGestionPedido.Controllers
 {
+    [Authorize]
     public class ClienteController : Controller
     {
         public readonly IDACliente dACliente;
