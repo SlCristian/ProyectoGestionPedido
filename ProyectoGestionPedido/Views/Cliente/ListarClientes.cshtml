@@ -1,0 +1,116 @@
+﻿@model IEnumerable<Cliente>
+
+<!-- Formulario para validar los campos -->
+<!-- Formulario para validar los campos -->
+<section>
+     <h2>Campo de registro</h2>
+    <div class="container-fluid mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="card-title">Agregar Cliente</h5>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Create" method="post">
+                            <div class="form-row">
+                                <!-- Primera fila -->
+                                <div class="form-group col-md-6">
+                                    <label for="Nombre">Nombre</label>
+                                    <input type="text" class="form-control" id="Nombre" name="Nombre" required />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Correo">Correo</label>
+                                    <input type="email" class="form-control" id="Correo" name="Correo" required />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <!-- Segunda fila -->
+                                <div class="form-group col-md-6">
+                                    <label for="Direccion">Dirección</label>
+                                    <input type="text" class="form-control" id="Direccion" name="Direccion" required />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Celular">Celular</label>
+                                    <input type="text" class="form-control" id="Celular" name="Celular" pattern="\d+" required />
+                                    <small class="form-text text-muted">Solo números.</small>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <!-- Tercera fila -->
+                                <div class="form-group col-md-6">
+                                    <label for="Password">Password</label>
+                                    <input type="password" class="form-control" id="Password" name="Password" required />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="ConfirmPassword">Confirmar Password</label>
+                                    <input type="password" class="form-control" id="ConfirmPassword" name="ConfirmPassword" required />
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success btn-block">Guardar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<section>
+    <h2>Campo de vizualización</h2>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-info card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span class="text-dark">
+                                <i class="nav-icon fas fa-list"></i>
+                            </span>
+                            Listado de Clientes
+                        </h3>
+                       
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            @foreach (var cliente in ViewBag.Listado)
+                            {
+                                    <div class="col-md-4 col-sm-6 mb-4">
+                                        <div class="card border-primary">
+                                                    <div class="card-header bg-primary text-white d-flex justify-content-between">
+                                                <h5 class="card-title" >@cliente.nombre</h5> 
+                                                        <img src="~/Imagenes/client.png"   alt="Descripción de la imagen">
+
+                                            </div>
+                                            <div class="card-body">
+                                                <p><strong>Correo:</strong> @cliente.correo</p>
+                                                <p><strong>Dirección:</strong> @cliente.direccion</p>
+                                                <p><strong>Celular:</strong> @cliente.celular</p>
+                                            </div>
+                                            <div class="card-footer text-center">
+                                                <a class="btn btn-info btn-sm" role="button" asp-route-id="@cliente.IdCliente" asp-action="Edit">
+                                                    <i class="far fa-edit text-white"></i> Editar
+                                                </a>
+                                                <a class="btn btn-warning btn-sm" role="button" asp-route-id="@cliente.IdCliente" asp-action="Details">
+                                                    <i class="fa fa-eye text-white"></i> Ver
+                                                </a>
+                                                <a class="btn btn-danger btn-sm" role="button" asp-route-id="@cliente.IdCliente" asp-action="Delete">
+                                                    <i class="fa fa-trash text-white"></i> Eliminar
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+

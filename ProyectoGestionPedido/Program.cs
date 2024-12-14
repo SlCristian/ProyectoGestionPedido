@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ProyectoGestionPedido.Data;
+using ProyectoGestionPedido.Data.DataAccess;
+using ProyectoGestionPedido.Data.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,23 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+//AGREGANDO PARA LAS INTERFACES//
+//ACA SE PONE PARA LAS INTERFACES//
+builder.Services.AddSingleton<IDACliente,ClienteDA>();
+builder.Services.AddSingleton<IDADetallePedido,DetallePedidoDA>();
+builder.Services.AddSingleton<IDAMetodoTransporte, MetodoTransporteDA>();
+builder.Services.AddSingleton<IDAPedido, PedidoDA>();
+builder.Services.AddSingleton<IDAProducto, ProductoDA>();
+builder.Services.AddSingleton<IDARutas, RutasDA>();
+//AGREGANDO PARA LOS ROLES//
+
+
+
+
+
+
+
+//FINAL//
 
 var app = builder.Build();
 

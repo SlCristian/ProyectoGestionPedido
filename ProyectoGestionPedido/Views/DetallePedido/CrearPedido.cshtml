@@ -1,0 +1,63 @@
+﻿
+@model IEnumerable<DetallePedido>;
+
+@{
+    var producto = ViewBag.producto as Producto; // Asegúrate de que "Producto" es el modelo adecuado
+}
+<div class="container mt-5">
+    <h2 class="text-center">Realizar Pedido</h2>
+    <div class="row">
+        <!-- Div para mostrar la información del producto seleccionado -->
+        <div class="col-md-4">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title">@producto.NombreProducto</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Descripción:</strong> @producto.Descripcion</p>
+                    <p><strong>Precio Unitario:</strong> @producto.PrecioUnitario</p>
+                    <p><strong>Stock Disponible:</strong> @producto.stock</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Div para el formulario de pedido -->
+        <div class="col-md-8">
+            <form method="post" asp-action="CrearPedido">
+                <input type="hidden" name="IdProducto" value="@producto.IdProducto" />
+  <!-- Selección del cliente -->
+                <div class="form-group">
+                    <label for="cliente">Seleccionar Cliente</label>
+                    <select id="cliente" name="IdCliente" class="form-control" required>
+                        <option value="">-- Seleccione un Cliente --</option>
+                        @foreach (var cliente in ViewBag.ListadoCliente)
+                        {
+                                <option value="@cliente.IdCliente">@cliente.nombre</option>
+                        }
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="FechaPedido">Fecha Pedido:</label>
+                    <input type="date" id="FechaPedido" name="FechaPedido" class="form-control"  required />
+                </div>
+                 <div class="form-group">
+                    <label for="estado">Estado: </label>
+                    <input type="text" id="estado" name="estado" class="form-control" required />
+                </div>
+              <div class="form-group">
+                    <label for="cantidad">Cantidad: </label>
+                    <input type="number" id="cantidad" name="cantidad" class="form-control" required />
+                </div>
+                  <div class="form-group">
+                    <label for="subtotal">Subtotal: </label>
+                    <input type="number" id="subtotal" name="subtotal" class="form-control" required />
+                </div>
+
+                <button type="submit" class="btn btn-success">Confirmar Pedido</button>
+               
+            </form>
+
+        </div>
+    </div>
+</div>

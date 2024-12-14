@@ -1,0 +1,61 @@
+﻿
+@model IEnumerable<DetallePedido>;
+
+<section>
+    <h2>Campo de vizualización</h2>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-info card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span class="text-dark">
+                                <i class="nav-icon fas fa-list"></i>
+                            </span>
+                            Listado de DetallePedidos
+                        </h3>
+
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            @foreach (var DetallePedido in ViewData["Listado"] as IList<DetallePedido>)
+                            {
+                                        <div class="col-md-4 col-sm-6 mb-4">
+                                            <div class="card border-primary">
+                                                        <div class="card-header bg-primary text-white d-flex justify-content-between">
+                                                    <h5 class="card-title" >Detalle pedido @DetallePedido.IdDetallePedido</h5> 
+                                                    @{
+                                                        /*
+                                                 <img src="~/Imagenes/client.png"   alt="Descripción de la imagen">
+                                                 */
+                                                    }
+
+                                                </div>
+                                                <div class="card-body">
+                                                    <p><strong>Fecha Pedido:</strong> @DetallePedido.Pedido.FechaPedido</p>
+                                                    <p><strong>Estado:</strong> @DetallePedido.Pedido.EstadoPedido</p>
+                                                    <p><strong>Producto:</strong> @DetallePedido.Producto.NombreProducto</p>
+                                                         <p><strong>Costo unitario:</strong> @DetallePedido.Producto.PrecioUnitario</p>
+                                                </div>
+                                                <div class="card-footer text-center">
+                                                    <a class="btn btn-info btn-sm" role="button" asp-route-id="@DetallePedido.IdDetallePedido" asp-action="Edit">
+                                                        <i class="far fa-edit text-white"></i> Editar
+                                                    </a>
+                                                    <a class="btn btn-warning btn-sm" role="button" asp-route-id="@DetallePedido.IdDetallePedido" asp-action="Details">
+                                                        <i class="fa fa-eye text-white"></i> Ver
+                                                    </a>
+                                                    <a class="btn btn-danger btn-sm" role="button" asp-route-id="@DetallePedido.IdDetallePedido" asp-action="Delete">
+                                                        <i class="fa fa-trash text-white"></i> Eliminar
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

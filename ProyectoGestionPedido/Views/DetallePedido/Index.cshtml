@@ -1,0 +1,59 @@
+﻿@model IEnumerable<DetallePedido>
+
+
+<section>
+    <h2>Campo de vizualización</h2>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-info card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span class="text-dark">
+                                <i class="nav-icon fas fa-list"></i>
+                            </span>
+                           Seleccione el producto a comprar 
+                        </h3>
+
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            @foreach (var Producto in ViewBag.Productos)
+                            {
+                                        <div class="col-md-4 col-sm-6 mb-4">
+                                            <div class="card border-primary">
+                                                        <div class="card-header bg-primary text-white d-flex justify-content-between">
+                                                    <h5 class="card-title" >@Producto.NombreProducto</h5> 
+                                                    @{
+                                                        /*
+                 <img src="~/Imagenes/client.png"   alt="Descripción de la imagen">
+                                                 */
+                                                    }
+                                                            
+
+                                                </div>
+                                                <div class="card-body">
+                                                    <p><strong>Descripcion:</strong> @Producto.Descripcion</p>
+                                                    <p><strong>Precio unitario:</strong> @Producto.PrecioUnitario</p>
+                                                    <p><strong>Stock :</strong> @Producto.stock</p>
+                                               <a class="btn btn-danger btn-sm" role="button" asp-route-id="@Producto.IdProducto" asp-action="CrearPedido">
+                        <img src="~/Imagenes/order.png" alt="Descripción de la imagen"> Realizar un pedido
+                    </a>
+                         
+                                                </div>
+                             <a class="btn btn-danger btn-sm" role="button"  asp-action="ListarDetallePedido"> Detalle Pedidos </a>                     
+                                            </div>
+                                        </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+   
+</section>
+<!-- Formulario para validar los campos del pedido-->
+
