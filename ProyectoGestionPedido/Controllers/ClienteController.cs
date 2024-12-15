@@ -41,6 +41,21 @@ namespace ProyectoGestionPedido.Controllers
             return View();
         }
 
+        public IActionResult ListarVendedor(int page = 1)
+        {
+            //var ListadoDetalleVentas = new DetalleVentasDA();
+            //ViewBag.ListadoDetalleVentas = ListadoDetalleVentas.GetDetalleVentas();
+            var pageNumber = page;
+
+            var modelo = dACliente.GetAllClientes();
+
+            var EnviarDatos = modelo.OrderByDescending(x => x.IdCliente).ToList().ToPagedList(pageNumber, 5);
+
+            ViewBag.Listado = EnviarDatos; //dependencia
+
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(Cliente Entity, string Password, int page=1)
         {
@@ -76,7 +91,7 @@ namespace ProyectoGestionPedido.Controllers
             var modelo = dACliente.GetAllClientes();
             var EnviarDatos = modelo.OrderByDescending(x => x.IdCliente).ToList().ToPagedList(pageNumber, 5);
             ViewBag.Listado = EnviarDatos;
-            return View("ListarClientes");
+            return View("ListarVendedor");
         }
 
         public IActionResult Details(string id)
