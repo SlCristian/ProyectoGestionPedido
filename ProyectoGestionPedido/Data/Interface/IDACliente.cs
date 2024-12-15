@@ -6,7 +6,7 @@ namespace ProyectoGestionPedido.Data.Interface
     {
         IEnumerable<Cliente> GetAllClientes();
          int InsertClientes(Cliente Clientes);
-
+        Cliente InsertClientesReturn(Cliente Clientes);
         Cliente GetCLienteById(string IdCLiente);
         bool UpdateCliente(Cliente Entidad);
 

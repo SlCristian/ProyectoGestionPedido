@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using ProyectoGestionPedido.Data.Interface;
+using ProyectoGestionPedido.Models;
 using static ProyectoGestionPedido.Data.ApplicationDbContext;
 namespace ProyectoGestionPedido.Areas.Identity.Pages.Account
 {
@@ -23,17 +25,18 @@ namespace ProyectoGestionPedido.Areas.Identity.Pages.Account
         private readonly UserManager<Usuario> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-
+        private readonly IDACliente dACliente;
         public RegisterModel(
             UserManager<Usuario> userManager,
             SignInManager<Usuario> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,IDACliente dACliente)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            this.dACliente = dACliente;
         }
 
         [BindProperty]
@@ -86,6 +89,20 @@ namespace ProyectoGestionPedido.Areas.Identity.Pages.Account
 
                 var user = new Usuario { UserName = Input.Email, Email = Input.Email,nombre=Input.nombre,celular=Input.celular,
                     direccion=Input.direccion,TipoCliente=Input.TipoCliente};
+                if (user.TipoCliente=="Cliente")
+                {
+                    //aca iria el metodo//
+                    var cliente = new Cliente
+                    {
+                        IdCliente = user.Id,
+                        nombre = user.nombre,
+                        correo = user.Email,
+                        direccion = user.direccion,
+                        celular = user.celular,
+                        TipoCliente = user.TipoCliente
+                    };
+                    var modelo = dACliente.InsertClientes(cliente);
+                }
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

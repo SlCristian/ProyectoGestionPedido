@@ -35,6 +35,19 @@ namespace ProyectoGestionPedido.Data.DataAccess
             return 1;
         }
 
+
+        public Cliente InsertClientesReturn(Cliente Clientes)
+        {
+           
+            using (var db = new ApplicationDbContext())
+            {
+                db.Add(Clientes);
+                db.SaveChanges();
+
+            }
+            return Clientes;
+        }
+
         //Buscar//
         public Cliente GetCLienteById(string IdCLiente)
         {

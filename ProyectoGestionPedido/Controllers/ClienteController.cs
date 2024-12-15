@@ -1,19 +1,23 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata;
 using ProyectoGestionPedido.Data;
 using ProyectoGestionPedido.Data.Interface;
 using ProyectoGestionPedido.Models;
 using X.PagedList.Extensions;
+using static ProyectoGestionPedido.Data.ApplicationDbContext;
 namespace ProyectoGestionPedido.Controllers
 {
     [Authorize]
     public class ClienteController : Controller
     {
         public readonly IDACliente dACliente;
-        public ClienteController(IDACliente dACliente)
+        private readonly UserManager<Usuario> _userManager;
+        public ClienteController(IDACliente dACliente,UserManager<Usuario> userManager)
         {
             this.dACliente = dACliente;
+            this._userManager = userManager;
         }
 
         public IActionResult Index()
@@ -38,12 +42,37 @@ namespace ProyectoGestionPedido.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Cliente Entity, int page=1)
+        public async Task<IActionResult> Create(Cliente Entity, string Password, int page=1)
         {
-            //falta relacionarlo con el user//
+
+            //creamos un idautogenerado
+            Entity.IdCliente = Guid.NewGuid().ToString();
+
+
             //Entity.IdCliente = "dsd"; //
+           
             var pageNumber = page;
-            var model = dACliente.InsertClientes(Entity);
+            var model = dACliente.InsertClientesReturn(Entity);
+            //falta relacionarlo con el user//
+
+            // Creamos el usuario en la tabla AspNetUsers
+            Console.WriteLine(model.IdCliente);
+            var user = new Usuario
+            {
+                UserName = Entity.correo,  // Usamos el email del cliente como username
+                Email = Entity.correo,
+                nombre = Entity.nombre,
+                celular = Entity.celular,
+                direccion = Entity.direccion,
+                TipoCliente = Entity.TipoCliente,
+              Id=Entity.IdCliente,
+            };
+
+            // Intentamos crear el usuario en AspNetUsers con la contraseña proporcionada en el formulario
+            var result = await _userManager.CreateAsync(user, Password);
+
+
+
             var modelo = dACliente.GetAllClientes();
             var EnviarDatos = modelo.OrderByDescending(x => x.IdCliente).ToList().ToPagedList(pageNumber, 5);
             ViewBag.Listado = EnviarDatos;
