@@ -8,5 +8,6 @@ namespace ProyectoGestionPedido.Data.Interface
         int InsertDetallePedido(DetallePedido Entidad);
         DetallePedido GetIdDetallePedido(int id);
         bool UpdateDetallePedido(DetallePedido Entidad);
+        bool DeleteDetallePedido(int id);
     }
 }

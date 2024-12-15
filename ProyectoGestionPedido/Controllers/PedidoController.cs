@@ -4,6 +4,7 @@ using ProyectoGestionPedido.Models;
 
 namespace ProyectoGestionPedido.Controllers
 {
+    //asd
     public class PedidoController : Controller
     {
         private readonly IDAPedido _pedidoDA;
@@ -15,7 +16,7 @@ namespace ProyectoGestionPedido.Controllers
         }
 
         // 1. MOSTRAR TODOS LOS PEDIDOS
-        public IActionResult Index()
+        public IActionResult ListarPedido()
         {
             var pedidos = _pedidoDA.GetAllPedidos();
             return View(pedidos);

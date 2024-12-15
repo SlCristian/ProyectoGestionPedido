@@ -61,7 +61,7 @@ namespace ProyectoGestionPedido.Data
       
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-86F1Q2M;User id=sa;Database=SISTEMAPEDIDO;" +
+            optionsBuilder.UseSqlServer("Server=DESKTOP-AO0U1EL;User id=sa;Database=SISTEMAPEDIDO;" +
                 "Password=123;MultipleActiveResultSets=True;Encrypt=False");
         }
 

@@ -1,0 +1,78 @@
+﻿@using System.Security.Claims
+@model IEnumerable<DetallePedido>
+
+<section>
+    <h2>Detalles del Pedido</h2>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-info card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span class="text-dark">
+                                <i class="nav-icon fas fa-list"></i>
+                            </span>
+                            Listado de Detalles del Pedido
+                        </h3>
+                    </div>
+
+                    <div class="card-body">
+                        @* Conversiones explícitas de ViewData *@
+                        @{
+                            var pedido = ViewData["Pedido"] as Pedido; // Un único pedido
+                            var detalles = ViewData["Detalles"] as List<DetallePedido>; // Lista de detalles del pedido
+                        }
+
+                        <div class="row">
+                            <div class="col-md-12 mb-4">
+                                <div class="card border-primary">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5 class="card-title">Pedido ID: @pedido.IdPedido</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Fecha del Pedido:</strong> @pedido.FechaPedido</p>
+                                        <p><strong>Estado del Pedido:</strong> @pedido.EstadoPedido</p>
+
+                                        <h6 class="mt-4">Productos en este pedido:</h6>
+                                        <table class="table table-bordered table-hover">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>Producto</th>
+                                                    <th>Precio Unitario</th>
+                                                    <th>Cantidad</th>
+                                                    <th>Subtotal</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var detalle in detalles)
+                                                {
+                                                    <tr>
+                                                        <td>@detalle.Producto.NombreProducto</td>
+                                                        <td>@detalle.Producto.PrecioUnitario</td>
+                                                        <td>@detalle.Cantidad</td>
+                                                        <td>@detalle.subtotal</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a class="btn btn-info btn-sm" role="button" asp-route-id="@pedido.IdPedido" asp-action="Edit">
+                                            <i class="far fa-edit text-white"></i> Editar Pedido
+                                        </a>
+                                        <a class="btn btn-warning btn-sm" role="button" asp-route-id="@pedido.IdPedido" asp-action="Details">
+                                            <i class="fa fa-eye text-white"></i> Ver Pedido
+                                        </a>
+                                        <a class="btn btn-danger btn-sm" role="button" asp-route-id="@pedido.IdPedido" asp-action="Delete">
+                                            <i class="fa fa-trash text-white"></i> Eliminar Pedido
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

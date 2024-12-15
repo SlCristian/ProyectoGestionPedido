@@ -106,5 +106,86 @@ namespace ProyectoGestionPedido.Controllers
 
             return View();
         }
+
+        public IActionResult ListarProductosPedido(int IdPedido)
+        {
+            // Obtén el pedido especificado por IdPedido
+            var pedido = dAPedido.GetPedidoById(IdPedido);
+
+            // Obtén los detalles relacionados con el pedido
+            var detallesPedidos = dADetallePedido.GetDetallePedido()
+                .Where(dp => dp.IdPedido == IdPedido)
+                .ToList();
+
+            // Pasar los datos del pedido y sus detalles a la vista
+            ViewData["Pedido"] = pedido;
+            ViewData["Detalles"] = detallesPedidos;
+
+            return View();
+        }
+
+
+
+        public IActionResult Details(int id)
+        {
+            var detallePedido = dADetallePedido.GetIdDetallePedido(id);
+            if (detallePedido == null)
+                return NotFound();
+
+            ViewBag.Producto = dAProducto.GetProductoById(detallePedido.IdProducto);
+            ViewBag.Pedido = dAPedido.GetPedidoById(detallePedido.IdPedido);
+
+            return View(detallePedido);
+        }
+
+        public IActionResult Edit(int id)
+        {
+            var detallePedido = dADetallePedido.GetIdDetallePedido(id);
+            if (detallePedido == null)
+                return NotFound();
+
+            ViewBag.Productos = dAProducto.GetAllProductos();
+            return View(detallePedido);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(DetallePedido Entity)
+        {
+            if (ModelState.IsValid)
+            {
+                var resultado = dADetallePedido.UpdateDetallePedido(Entity);
+                if (resultado)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
+            ViewBag.Productos = dAProducto.GetAllProductos();
+            return View(Entity);
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var detallePedido = dADetallePedido.GetIdDetallePedido(id);
+            if (detallePedido == null)
+                return NotFound();
+
+            return View(detallePedido);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var resultado = dADetallePedido.DeleteDetallePedido(id);
+            if (resultado)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return View();
+        }
+
+
+
+
     }
 }
