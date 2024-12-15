@@ -26,16 +26,21 @@
             <form method="post" asp-action="CrearPedido">
                 <input type="hidden" name="IdProducto" value="@producto.IdProducto" />
   <!-- Selección del cliente -->
-                <div class="form-group">
-                    <label for="cliente">Seleccionar Cliente</label>
-                    <select id="cliente" name="IdCliente" class="form-control" required>
-                        <option value="">-- Seleccione un Cliente --</option>
-                        @foreach (var cliente in ViewBag.ListadoCliente)
-                        {
-                                <option value="@cliente.IdCliente">@cliente.nombre</option>
-                        }
-                    </select>
-                </div>
+             @{
+                 /*
+                        <div class="form-group">
+                       <label for="cliente">Seleccionar Cliente</label>
+                       <select id="cliente" name="IdCliente" class="form-control" required>
+                           <option value="">-- Seleccione un Cliente --</option>
+                           @foreach (var cliente in ViewBag.ListadoCliente)
+                                   {
+                                   <option value="@cliente.IdCliente">@cliente.nombre</option>
+                       }
+               </select>
+                     </div> 
+
+                    */
+             }
                 
                 <div class="form-group">
                     <label for="FechaPedido">Fecha Pedido:</label>

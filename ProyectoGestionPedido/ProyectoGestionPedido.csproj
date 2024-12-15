@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\Pedido\NewFile.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.11" />
@@ -24,7 +28,6 @@
   <ItemGroup>
     <Folder Include="Views\Produto\" />
     <Folder Include="Views\Rutas\" />
-    <Folder Include="Views\Pedido\" />
   </ItemGroup>
 
 </Project>

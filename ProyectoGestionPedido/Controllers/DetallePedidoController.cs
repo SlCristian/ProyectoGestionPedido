@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProyectoGestionPedido.Data.Interface;
 using ProyectoGestionPedido.Models;
+using System.Security.Claims;
 using X.PagedList.Extensions;
 namespace ProyectoGestionPedido.Controllers
 {
@@ -48,9 +49,11 @@ namespace ProyectoGestionPedido.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult CrearPedido( int IdProducto, int cantidad,double subtotal, string IdCliente,DateTime FechaPedido, string estado)
+        public IActionResult CrearPedido( int IdProducto, int cantidad,double subtotal,DateTime FechaPedido, string estado)
         {
-
+            //obtener el idcliente del usuario registrado//
+            var IdCliente = User.FindFirstValue(ClaimTypes.NameIdentifier);
+           
             //create pedido//
             var pedido = new Pedido
             {
@@ -67,16 +70,40 @@ namespace ProyectoGestionPedido.Controllers
             detallePed.IdPedido = model.IdPedido;
 
             var modelo = dADetallePedido.InsertDetallePedido(detallePed);
-         
-            var GetDetalle=dADetallePedido.GetDetallePedido();
-            ViewData["Listado"]=GetDetalle;
+
+
+            // Filtra los pedidos del cliente
+            var pedidosCliente = dAPedido.GetAllPedidos().Where(p => p.IdCliente == IdCliente).ToList();
+
+            // Obtén los detalles relacionados con los pedidos filtrados
+            var detallesPedidosCliente = dADetallePedido.GetDetallePedido()
+                .Where(dp => pedidosCliente.Select(p => p.IdPedido).Contains(dp.IdPedido))
+                .ToList();
+
+            // Pasar los datos a la vista
+            ViewData["ListadoP"] = pedidosCliente;
+            ViewData["Listado"] = detallesPedidosCliente;
+
             return View("ListarDetallePedido");
            
         }
         public IActionResult ListarDetallePedido()
         {
-            var DetallePedidos = dADetallePedido.GetDetallePedido();
-            ViewData["Listado"] = DetallePedidos;
+            // Obtén el ID del cliente logueado
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Filtra los pedidos del cliente
+            var pedidosCliente = dAPedido.GetAllPedidos().Where(p => p.IdCliente == userId).ToList();
+
+            // Obtén los detalles relacionados con los pedidos filtrados
+            var detallesPedidosCliente = dADetallePedido.GetDetallePedido()
+                .Where(dp => pedidosCliente.Select(p => p.IdPedido).Contains(dp.IdPedido))
+                .ToList();
+
+            // Pasar los datos a la vista
+            ViewData["ListadoP"] = pedidosCliente;
+            ViewData["Listado"] = detallesPedidosCliente;
+
             return View();
         }
     }

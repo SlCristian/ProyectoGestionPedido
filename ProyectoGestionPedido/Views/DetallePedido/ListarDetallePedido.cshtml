@@ -1,8 +1,9 @@
-﻿
+﻿@using System.Security.Claims
+
 @model IEnumerable<DetallePedido>;
 
 <section>
-    <h2>Campo de vizualización</h2>
+    <h2>Campo de visualización</h2>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -12,45 +13,51 @@
                             <span class="text-dark">
                                 <i class="nav-icon fas fa-list"></i>
                             </span>
-                            Listado de DetallePedidos
+                            Listado de Pedidos
                         </h3>
-
                     </div>
 
                     <div class="card-body">
                         <div class="row">
-                            @foreach (var DetallePedido in ViewData["Listado"] as IList<DetallePedido>)
+                            @foreach (var pedido in ViewData["ListadoP"] as IList<Pedido>)
                             {
-                                        <div class="col-md-4 col-sm-6 mb-4">
-                                            <div class="card border-primary">
-                                                        <div class="card-header bg-primary text-white d-flex justify-content-between">
-                                                    <h5 class="card-title" >Detalle pedido @DetallePedido.IdDetallePedido</h5> 
-                                                    @{
-                                                        /*
-                                                 <img src="~/Imagenes/client.png"   alt="Descripción de la imagen">
-                                                 */
-                                                    }
+                                    <div class="col-md-12 mb-4">
+                                        <div class="card border-primary">
+                                            <div class="card-header bg-primary text-white d-flex justify-content-between">
+                                                <h5 class="card-title">Pedido @pedido.IdPedido</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <p><strong>Fecha Pedido:</strong> @pedido.FechaPedido</p>
+                                                <p><strong>Estado:</strong> @pedido.EstadoPedido</p>
 
-                                                </div>
-                                                <div class="card-body">
-                                                    <p><strong>Fecha Pedido:</strong> @DetallePedido.Pedido.FechaPedido</p>
-                                                    <p><strong>Estado:</strong> @DetallePedido.Pedido.EstadoPedido</p>
-                                                    <p><strong>Producto:</strong> @DetallePedido.Producto.NombreProducto</p>
-                                                         <p><strong>Costo unitario:</strong> @DetallePedido.Producto.PrecioUnitario</p>
-                                                </div>
-                                                <div class="card-footer text-center">
-                                                    <a class="btn btn-info btn-sm" role="button" asp-route-id="@DetallePedido.IdDetallePedido" asp-action="Edit">
-                                                        <i class="far fa-edit text-white"></i> Editar
-                                                    </a>
-                                                    <a class="btn btn-warning btn-sm" role="button" asp-route-id="@DetallePedido.IdDetallePedido" asp-action="Details">
-                                                        <i class="fa fa-eye text-white"></i> Ver
-                                                    </a>
-                                                    <a class="btn btn-danger btn-sm" role="button" asp-route-id="@DetallePedido.IdDetallePedido" asp-action="Delete">
-                                                        <i class="fa fa-trash text-white"></i> Eliminar
-                                                    </a>
-                                                </div>
+                                                <h6>Productos en este pedido:</h6>
+                                                <ul>
+                                                @foreach (var detalle in ViewData["Listado"] as IList<DetallePedido>)
+                                                {
+                                                    if (detalle.IdPedido == pedido.IdPedido)
+                                                    {
+                                                                    <li>
+                                                                        <p><strong>Producto:</strong> @detalle.Producto.NombreProducto</p>
+                                                                        <p><strong>Costo unitario:</strong> @detalle.Producto.PrecioUnitario</p>
+                                                                        <p><strong>Cantidad:</strong> @detalle.Cantidad</p>
+                                                                    </li>
+                                                    }
+                                                }
+                                                </ul>
+                                            </div>
+                                            <div class="card-footer text-center">
+                                                <a class="btn btn-info btn-sm" role="button" asp-route-id="@pedido.IdPedido" asp-action="Edit">
+                                                    <i class="far fa-edit text-white"></i> Editar Pedido
+                                                </a>
+                                                <a class="btn btn-warning btn-sm" role="button" asp-route-id="@pedido.IdPedido" asp-action="Details">
+                                                    <i class="fa fa-eye text-white"></i> Ver Pedido
+                                                </a>
+                                                <a class="btn btn-danger btn-sm" role="button" asp-route-id="@pedido.IdPedido" asp-action="Delete">
+                                                    <i class="fa fa-trash text-white"></i> Eliminar Pedido
+                                                </a>
                                             </div>
                                         </div>
+                                    </div>
                             }
                         </div>
                     </div>

@@ -1,0 +1,38 @@
+﻿@model IEnumerable<ProyectoGestionPedido.Models.Pedido>
+
+@{
+    ViewData["Title"] = "Pedidos";
+}
+
+<h2>Lista de Pedidos</h2>
+<a asp-action="Create" class="btn btn-primary mb-3">Nuevo Pedido</a>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Cliente</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pedido in Model)
+        {
+            <tr>
+                <td>@pedido.IdPedido</td>
+                <td>@pedido.FechaPedido</td>
+                <td>@pedido.EstadoPedido</td>
+                <td>@pedido.Cliente.nombre</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@pedido.IdPedido" class="btn btn-info btn-sm">Detalles</a>
+                    <a asp-action="Edit" asp-route-id="@pedido.IdPedido" class="btn btn-warning btn-sm">Editar</a>
+                    <form asp-action="Delete" asp-route-id="@pedido.IdPedido" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

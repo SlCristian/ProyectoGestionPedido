@@ -35,7 +35,10 @@ builder.Services.AddAuthorization(
         "AllowLayoutVendedor",
     policy => policy.RequireRole("Vendedor")));
 
-
+builder.Services.AddAuthorization(
+    options => options.AddPolicy(
+        "AllowLayoutCliente",
+    policy => policy.RequireRole("Cliente")));
 
 
 
