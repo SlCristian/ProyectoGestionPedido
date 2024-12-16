@@ -9,5 +9,6 @@ namespace ProyectoGestionPedido.Data.Interface
         DetallePedido GetIdDetallePedido(int id);
         bool UpdateDetallePedido(DetallePedido Entidad);
         bool DeleteDetallePedido(int id);
+        IEnumerable<DetallePedido> GetDetallePedidoByIdPedido(int idPedido);
     }
 }

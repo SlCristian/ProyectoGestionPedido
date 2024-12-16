@@ -1,0 +1,60 @@
+﻿@model IEnumerable<ProyectoGestionPedido.Models.Pedido>
+
+@{
+    ViewData["Title"] = "Gestión de Pedidos";
+}
+
+<h1>Gestión de Pedidos</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID Pedido</th>
+            <th>Cliente</th>
+            <th>Fecha Pedido</th>
+            <th>Estado</th>
+            <th>Método de Transporte</th>
+            <th>Distancia (km)</th>
+            <th>Costo Total</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.IdPedido)</td>
+                <td>@Html.DisplayFor(modelItem => item.Cliente.nombre)</td>
+                <td>@Html.DisplayFor(modelItem => item.FechaPedido)</td>
+                <td>@Html.DisplayFor(modelItem => item.EstadoPedido)</td>
+                <td>@Html.DisplayFor(modelItem => item.Rutas.FirstOrDefault().MetodoTransporte.Nombre)</td>
+                <td>@Html.DisplayFor(modelItem => item.Rutas.FirstOrDefault().distanciaKilomentro)</td>
+                <td>@Html.DisplayFor(modelItem => item.Rutas.FirstOrDefault().CostoTotal)</td>
+                <td>
+                    @if (item.EstadoPedido == "Pendiente")
+                    {
+                        <form asp-action="ActualizarEstado" method="post">
+                            <input type="hidden" name="id" value="@item.IdPedido" />
+                            <input type="hidden" name="nuevoEstado" value="En Camino" />
+                            <button type="submit" class="btn btn-warning btn-sm">Iniciar Entrega</button>
+                        </form>
+
+                        <!-- Botón Administrar Ruta, que también cambia el estado a En Camino -->
+                        <form asp-action="AdministrarRutaPedido" method="post">
+                            <input type="hidden" name="idPedido" value="@item.IdPedido" />
+                            <button type="submit" class="btn btn-primary btn-sm">Administrar Ruta</button>
+                        </form>
+                    }
+                    else if (item.EstadoPedido == "En Camino")
+                    {
+                        <form asp-action="ActualizarEstado" method="post">
+                            <input type="hidden" name="id" value="@item.IdPedido" />
+                            <input type="hidden" name="nuevoEstado" value="Entregado" />
+                            <button type="submit" class="btn btn-success btn-sm">Marcar como Entregado</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

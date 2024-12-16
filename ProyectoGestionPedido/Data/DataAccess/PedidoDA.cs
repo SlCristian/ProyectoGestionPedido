@@ -41,8 +41,25 @@ namespace ProyectoGestionPedido.Data.DataAccess
             }
             return Pedidos;
         }
-            //Buscar//
-            public Pedido GetPedidoById(int IdPedido)
+
+
+        public Pedido GetIdPedido(int id)
+        {
+            var Resultado = new Pedido();
+            using (var db = new ApplicationDbContext())
+            {
+                Resultado = db.Pedidos.Where(item => item.IdPedido == id)
+                    .FirstOrDefault();
+            }
+
+            return Resultado;
+
+        }
+
+
+
+        //Buscar//
+        public Pedido GetPedidoById(int IdPedido)
         {
             var resultado = new Pedido();
             using (var db = new ApplicationDbContext())

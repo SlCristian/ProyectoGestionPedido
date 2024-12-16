@@ -49,33 +49,45 @@ namespace ProyectoGestionPedido.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult CrearPedido( int IdProducto, int cantidad,double subtotal,DateTime FechaPedido, string estado)
+        [HttpPost]
+        public IActionResult CrearPedido(int IdProducto, int cantidad, string estado)
         {
-            //obtener el idcliente del usuario registrado//
+            // Obtener el id del cliente asociado al usuario registrado
             var IdCliente = User.FindFirstValue(ClaimTypes.NameIdentifier);
-           
-            //create pedido//
+
+            // Obtener el producto seleccionado para obtener el precio unitario
+            var producto = dAProducto.GetProductoById(IdProducto);
+
+            // Calcular el subtotal (cantidad * precio unitario)
+            decimal subtotal = cantidad * producto.PrecioUnitario;
+
+            // Crear pedido con la fecha actual
             var pedido = new Pedido
             {
-              FechaPedido= FechaPedido,
-              EstadoPedido= estado,
-              IdCliente=IdCliente
+                FechaPedido = DateTime.Now, // Establece la fecha actual automáticamente
+                EstadoPedido = estado,
+                IdCliente = IdCliente
             };
-            var model = dAPedido.InsertPedidosReturn(pedido);
-            //create detallepedido//
-            var detallePed = new DetallePedido();
-            detallePed.Cantidad = cantidad;
-            detallePed.subtotal = subtotal;
-            detallePed.IdProducto = IdProducto;
-            detallePed.IdPedido = model.IdPedido;
 
+            // Insertar el pedido y obtener el pedido creado
+            var model = dAPedido.InsertPedidosReturn(pedido);
+
+            // Crear el detalle del pedido
+            var detallePed = new DetallePedido
+            {
+                Cantidad = cantidad,
+                subtotal = (double)subtotal, // Asignar el subtotal calculado
+                IdProducto = IdProducto,
+                IdPedido = model.IdPedido
+            };
+
+            // Insertar el detalle del pedido
             var modelo = dADetallePedido.InsertDetallePedido(detallePed);
 
-
-            // Filtra los pedidos del cliente
+            // Filtrar los pedidos del cliente
             var pedidosCliente = dAPedido.GetAllPedidos().Where(p => p.IdCliente == IdCliente).ToList();
 
-            // Obtén los detalles relacionados con los pedidos filtrados
+            // Obtener los detalles relacionados con los pedidos filtrados
             var detallesPedidosCliente = dADetallePedido.GetDetallePedido()
                 .Where(dp => pedidosCliente.Select(p => p.IdPedido).Contains(dp.IdPedido))
                 .ToList();
@@ -85,8 +97,8 @@ namespace ProyectoGestionPedido.Controllers
             ViewData["Listado"] = detallesPedidosCliente;
 
             return View("ListarDetallePedido");
-           
         }
+
         public IActionResult ListarDetallePedido()
         {
             // Obtén el ID del cliente logueado
@@ -107,14 +119,14 @@ namespace ProyectoGestionPedido.Controllers
             return View();
         }
 
-        public IActionResult ListarProductosPedido(int IdPedido)
+        public IActionResult ListarProductosPedido(int id)
         {
             // Obtén el pedido especificado por IdPedido
-            var pedido = dAPedido.GetPedidoById(IdPedido);
+            var pedido = dAPedido.GetPedidoById(id);
 
             // Obtén los detalles relacionados con el pedido
             var detallesPedidos = dADetallePedido.GetDetallePedido()
-                .Where(dp => dp.IdPedido == IdPedido)
+                .Where(dp => dp.IdPedido == id)
                 .ToList();
 
             // Pasar los datos del pedido y sus detalles a la vista
@@ -140,12 +152,19 @@ namespace ProyectoGestionPedido.Controllers
 
         public IActionResult Edit(int id)
         {
-            var detallePedido = dADetallePedido.GetIdDetallePedido(id);
-            if (detallePedido == null)
-                return NotFound();
+            // Obtén los detalles del pedido utilizando el IdPedido
+            var detallesPedido = dADetallePedido.GetDetallePedidoByIdPedido(id); // Cambia este método para que obtenga los detalles por IdPedido
 
+            if (detallesPedido == null || !detallesPedido.Any())
+                return NotFound(); // Si no hay detalles para ese pedido, retorna "No encontrado"
+
+            // Asignar los productos para el dropdown en la vista
             ViewBag.Productos = dAProducto.GetAllProductos();
-            return View(detallePedido);
+
+            // Si solo tienes un detalle y deseas editarlo
+            var detallePedido = detallesPedido.FirstOrDefault();
+
+            return View(detallePedido); // Pasar solo un detalle para editar
         }
 
         [HttpPost]
@@ -153,16 +172,20 @@ namespace ProyectoGestionPedido.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Actualiza el detalle del pedido (por ejemplo, la cantidad)
                 var resultado = dADetallePedido.UpdateDetallePedido(Entity);
+
                 if (resultado)
                 {
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index)); // Redirige al listado de pedidos
                 }
             }
 
+            // Vuelve a cargar los productos en caso de error en el formulario
             ViewBag.Productos = dAProducto.GetAllProductos();
-            return View(Entity);
+            return View(Entity); // Retorna el modelo con los posibles errores
         }
+
 
         public IActionResult Delete(int id)
         {

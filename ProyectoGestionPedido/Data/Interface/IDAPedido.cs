@@ -11,5 +11,7 @@ namespace ProyectoGestionPedido.Data.Interface
         Pedido GetPedidoById(int IdPedido);
         bool UpdatePedido(Pedido Entidad);
         bool DeletePedido(int id);
+
+        Pedido GetIdPedido(int id);
     }
 }

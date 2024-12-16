@@ -21,47 +21,47 @@
                         <div class="row">
                             @foreach (var pedido in ViewData["ListadoP"] as IList<Pedido>)
                             {
-                                    <div class="col-md-12 mb-4">
-                                        <div class="card border-primary">
-                                            <div class="card-header bg-primary text-white d-flex justify-content-between">
-                                                <h5 class="card-title">Producto @pedido.IdPedido</h5>
-                                            </div>
-                                            <div class="card-body">
-                                                <p><strong>Fecha Pedido:</strong> @pedido.FechaPedido</p>
-                                                <p><strong>Estado:</strong> @pedido.EstadoPedido</p>
+                                <div class="col-md-12 mb-4">
+                                    <div class="card border-primary">
+                                        <div class="card-header bg-primary text-white d-flex justify-content-between">
+                                            <h5 class="card-title">Pedido @pedido.IdPedido</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p><strong>Fecha Pedido:</strong> @pedido.FechaPedido</p>
+                                            <p><strong>Estado:</strong> @pedido.EstadoPedido</p>
 
-                                                <h6>Productos en este pedido:</h6>
-                                                <ul>
+                                            <h6>Productos en este pedido:</h6>
+                                            <ul>
                                                 @foreach (var detalle in ViewData["Listado"] as IList<DetallePedido>)
                                                 {
-                                                    if (detalle.IdPedido == pedido.IdPedido)
+                                                    if (detalle.IdPedido == pedido.IdPedido) // Solo mostrar detalles del pedido actual
                                                     {
-                                                                    <li>
-                                                                        <p><strong>Producto:</strong> @detalle.Producto.NombreProducto</p>
-                                                                        <p><strong>Costo unitario:</strong> @detalle.Producto.PrecioUnitario</p>
-                                                                        <p><strong>Cantidad:</strong> @detalle.Cantidad</p>
-                                                                    </li>
+                                                        <li>
+                                                            <p><strong>Producto:</strong> @detalle.Producto.NombreProducto</p>
+                                                            <p><strong>Costo unitario:</strong> @detalle.Producto.PrecioUnitario</p>
+                                                            <p><strong>Cantidad:</strong> @detalle.Cantidad</p>
+                                                        </li>
                                                     }
                                                 }
-                                                </ul>
-                                            </div>
-                                            <div class="card-footer text-center">
-                                                @foreach (var detalle in ViewData["Listado"] as IList<DetallePedido>)
-                                                {
-                                                <a class="btn btn-info btn-sm" role="button" asp-route-id="@detalle.IdDetallePedido" asp-action="Edit">
-                                                    <i class="far fa-edit text-white"></i> Editar Pedido
-                                                </a>
-                                                <a class="btn btn-warning btn-sm" role="button" asp-route-id="@detalle.IdDetallePedido" asp-action="Details">
-                                                    <i class="fa fa-eye text-white"></i> Ver Pedido
-                                                </a>
-                                                <a class="btn btn-danger btn-sm" role="button" asp-route-id="@detalle.IdDetallePedido" asp-action="Delete">
-                                                    <i class="fa fa-trash text-white"></i> Eliminar Pedido
-                                                </a>
-                                                }
-                                            </div>
-
+                                            </ul>
+                                        </div>
+                                        <div class="card-footer text-center">
+                                            <!-- Botones de acción para el pedido, no para cada detalle -->
+                                            <a class="btn btn-info btn-sm" role="button" asp-route-id="@pedido.IdPedido" asp-action="Edit">
+                                                <i class="far fa-edit text-white"></i> Editar Pedido
+                                            </a>
+                                            <a class="btn btn-warning btn-sm" role="button" asp-route-id="@pedido.IdPedido" asp-action="Details">
+                                                <i class="fa fa-eye text-white"></i> Ver Pedido
+                                            </a>
+                                            @* <a class="btn btn-danger btn-sm" role="button" asp-route-id="@pedido.IdPedido" asp-action="Delete">
+                                                <i class="fa fa-trash text-white"></i> Eliminar Pedido
+                                            </a> *@
+                                            <a class="btn btn-warning btn-sm" role="button" asp-route-id="@pedido.IdPedido" asp-action="AsignarRuta">
+                                                <i class="fa fa-eye text-white"></i> Ver Pedido
+                                            </a>
                                         </div>
                                     </div>
+                                </div>
                             }
                         </div>
                     </div>

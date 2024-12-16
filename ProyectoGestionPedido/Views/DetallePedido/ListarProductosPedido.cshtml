@@ -57,15 +57,15 @@
                                         </table>
                                     </div>
                                     <div class="card-footer text-center">
-                                        <a class="btn btn-info btn-sm" role="button" asp-route-id="@pedido.IdPedido" asp-action="Edit">
+                                        <a class="btn btn-warning btn-sm" role="button" asp-route-id="@pedido.IdPedido" asp-controller="DetallePedido" asp-action="Edit">
                                             <i class="far fa-edit text-white"></i> Editar Pedido
                                         </a>
-                                        <a class="btn btn-warning btn-sm" role="button" asp-route-id="@pedido.IdPedido" asp-action="Details">
+                                        @* <a class="btn btn-warning btn-sm" role="button" asp-route-id="@pedido.IdPedido" asp-action="Details">
                                             <i class="fa fa-eye text-white"></i> Ver Pedido
-                                        </a>
-                                        <a class="btn btn-danger btn-sm" role="button" asp-route-id="@pedido.IdPedido" asp-action="Delete">
+                                        </a> *@
+                                        @* <a class="btn btn-danger btn-sm" role="button" asp-route-id="@pedido.IdPedido" asp-action="Delete">
                                             <i class="fa fa-trash text-white"></i> Eliminar Pedido
-                                        </a>
+                                        </a> *@
                                     </div>
                                 </div>
                             </div>

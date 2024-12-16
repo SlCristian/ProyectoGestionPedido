@@ -70,5 +70,19 @@ namespace ProyectoGestionPedido.Data.DataAccess
             return result;
         }
 
+        public IEnumerable<DetallePedido> GetDetallePedidoByIdPedido(int idPedido)
+        {
+            var listadoDetalles = new List<DetallePedido>();
+            using (var db = new ApplicationDbContext())
+            {
+                listadoDetalles = db.DetallePedidos
+                    .Where(dp => dp.IdPedido == idPedido)
+                    .Include(dp => dp.Producto) // Puedes incluir el Producto si lo necesitas
+                    .ToList();
+            }
+            return listadoDetalles;
+        }
+
+
     }
 }

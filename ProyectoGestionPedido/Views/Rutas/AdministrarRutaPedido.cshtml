@@ -1,0 +1,38 @@
+﻿@model ProyectoGestionPedido.Models.Rutas
+@{
+    ViewData["Title"] = "Administrar Ruta";
+}
+
+<h1>Administrar Ruta para el Pedido @ViewBag.Pedido.IdPedido</h1>
+
+<p>Estado del Pedido: @ViewBag.Pedido.EstadoPedido</p>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-warning">@ViewBag.Message</div>
+}
+
+<form asp-action="GuardarRuta" method="post">
+    <div class="form-group">
+        <label for="IdTransporte">Método de Transporte</label>
+        <select id="IdTransporte" name="IdTransporte" class="form-control" required>
+            @foreach (var metodo in ViewBag.MetodosTransporte)
+            {
+                <option value="@metodo.IdTransporte">@metodo.NombreTransporte</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="DistanciaKm">Distancia (km)</label>
+        <input type="number" id="DistanciaKm" name="DistanciaKm" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="CostoTotalTransporte">Costo Total</label>
+        <input type="number" id="CostoTotalTransporte" name="CostoTotalTransporte" class="form-control" required />
+    </div>
+
+    <input type="hidden" name="IdPedido" value="@ViewBag.Pedido.IdPedido" />
+    <button type="submit" class="btn btn-primary">Asignar Ruta</button>
+</form>

@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Produto\" />
-    <Folder Include="Views\Rutas\" />
   </ItemGroup>
 
 </Project>

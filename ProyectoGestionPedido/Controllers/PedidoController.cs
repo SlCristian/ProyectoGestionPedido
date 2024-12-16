@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProyectoGestionPedido.Data.DataAccess;
 using ProyectoGestionPedido.Data.Interface;
 using ProyectoGestionPedido.Models;
 
@@ -8,12 +9,18 @@ namespace ProyectoGestionPedido.Controllers
     public class PedidoController : Controller
     {
         private readonly IDAPedido _pedidoDA;
+        private readonly IDARutas _rutaDA;
+        private readonly IDAMetodoTransporte _metodoTransporteDA;
 
         // Constructor con inyección de dependencia
-        public PedidoController(IDAPedido pedidoDA)
+        public PedidoController(IDAPedido pedidoDA, IDARutas rutaDA, IDAMetodoTransporte metodoTransporteDA)
         {
             _pedidoDA = pedidoDA;
+            _rutaDA = rutaDA;
+            _metodoTransporteDA = metodoTransporteDA;
         }
+
+
 
         // 1. MOSTRAR TODOS LOS PEDIDOS
         public IActionResult ListarPedido()
@@ -77,16 +84,43 @@ namespace ProyectoGestionPedido.Controllers
             return View(pedido);
         }
 
-        // 5. ELIMINAR UN PEDIDO
-        [HttpPost]
         public IActionResult Delete(int id)
         {
-            var result = _pedidoDA.DeletePedido(id);
-            if (result)
-            {
-                return RedirectToAction("Index");
-            }
-            return BadRequest("No se pudo eliminar el pedido");
+            //var resultado=new DetalleVentasDA();
+            var model = _pedidoDA.GetIdPedido(id);
+            return View(model);
         }
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            //var model=new DetalleVentasDA();
+            var resultado = _pedidoDA.DeletePedido(id);
+
+            return RedirectToAction("ListarPedido");
+
+        }
+
+        public IActionResult AdministrarRutaPedido(int idPedido)
+        {
+            var pedido = _pedidoDA.GetPedidoById(idPedido);
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+
+            // Obtener los métodos de transporte disponibles desde la base de datos
+            var metodosTransporte = _metodoTransporteDA.GetMetodoTransportes();
+
+            // Pasar los métodos de transporte a la vista
+            ViewBag.MetodosTransporte = metodosTransporte;
+
+            // Pasar el pedido a la vista
+            ViewBag.Pedido = pedido;
+            return View();
+        }
+
+
+
+
     }
 }

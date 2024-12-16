@@ -26,12 +26,14 @@
                 <td>@pedido.EstadoPedido</td>
                 <td>@pedido.Cliente.nombre</td>
                 <td>
-                    @* <a asp-action="Details" asp-route-id="@pedido.IdPedido" class="btn btn-info btn-sm">Detalles</a> *@
-                    <a asp-controller="DetallePedido" asp-action="ListarProductosPedido" asp-route-id="@pedido.IdPedido" class="btn btn-info btn-sm">Detalles</a>
-                    @* <a asp-action="Edit" asp-route-id="@pedido.IdPedido" class="btn btn-warning btn-sm">Editar</a> *@
-                    <form asp-action="Delete" asp-route-id="@pedido.IdPedido" method="post" style="display:inline;">
-                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                    </form>
+                    @if (pedido.EstadoPedido == "Pendiente")
+                    {
+                        <a asp-action="Edit" asp-route-id="@pedido.IdPedido" class="btn btn-warning btn-sm">Editar</a>
+
+                        <form asp-action="Delete" asp-route-id="@pedido.IdPedido" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Cancelar pedido</button>
+                        </form>
+                    }
                 </td>
             </tr>
         }
